@@ -71,3 +71,39 @@ Refer to the docs for
 ## License
 
 MIT, see [LICENSE](LICENSE).
+
+## EXTRA SETUP FOR AWS ECS/EC2
+To work on AWS ECS/EC2, httpd needs to be installed on the EC2 host directly with the config below:
+
+Install all necessary tools:
+```
+sudo yum install nano
+sudo yum install httpd
+sudo yum install mod_ssl
+sudo systemctl enable httpd
+sudo systemctl start httpd
+```
+
+
+Set up virtual hosts with the below config `/etc/httpd/conf.d/vhost.conf`
+Will require to set up a self-signed certificate as explained here https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/SSL-on-amazon-linux-2.html
+```
+<VirtualHost *:443>
+    ServerName comments.meca1.fr
+
+    ProxyPass / http://localhost:8080/
+    ProxyPassReverse / http://localhost:8080/
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+    SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName comments.meca1.fr
+    ProxyPass / http://localhost:8080/
+    ProxyPassReverse / http://localhost:8080/
+</VirtualHost>
+```
+
+
