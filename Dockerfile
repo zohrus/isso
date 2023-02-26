@@ -80,6 +80,8 @@ RUN mkdir /db /config && chmod 1777 /db /config
 # Configuration
 VOLUME /db /config
 EXPOSE 8080
+
+ADD config/isso.cfg /config/isso.cfg
 ENV ISSO_SETTINGS /config/isso.cfg
 
 # Run Isso via gunicorn WSGI server

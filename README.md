@@ -77,6 +77,7 @@ To work on AWS ECS/EC2, httpd needs to be installed on the EC2 host directly wit
 
 Install all necessary tools:
 ```
+sudo yum install aws-cli
 sudo yum install nano
 sudo yum install httpd
 sudo yum install mod_ssl
@@ -93,6 +94,7 @@ Will require to set up a self-signed certificate as explained here https://docs.
 
     ProxyPass / http://localhost:8080/
     ProxyPassReverse / http://localhost:8080/
+    ProxyPreserveHost On
 
     SSLEngine on
     SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
@@ -103,7 +105,14 @@ Will require to set up a self-signed certificate as explained here https://docs.
     ServerName comments.meca1.fr
     ProxyPass / http://localhost:8080/
     ProxyPassReverse / http://localhost:8080/
+    ProxyPreserveHost On
 </VirtualHost>
+```
+
+Useful commands:
+```bash
+# Copy comments.db locally
+scp -i "~/Downloads/meca1-keypair-latest.pem" "ec2-user@ec2-35-180-57-138.eu-west-3.compute.amazonaws.com:/mnt/efs/fs1/comments.db" ./*
 ```
 
 

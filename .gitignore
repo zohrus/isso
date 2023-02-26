@@ -70,3 +70,5 @@ ENV/
 # Development tools
 .vagrant
 .eggs
+
+.DS_Store
