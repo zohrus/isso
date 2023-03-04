@@ -15,6 +15,4 @@ aws --profile $PROFILE ecr get-login-password --region $REGION | docker login --
 docker tag $IMAGE:latest $REPOSITORY/$IMAGE:latest
 docker push $REPOSITORY/$IMAGE:latest
 
-cd scripts/
-
-
+cd ../

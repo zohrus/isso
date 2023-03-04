@@ -166,7 +166,7 @@ class Comments:
             'GROUP BY comments.mode').fetchall()
         return dict(comment_count)
 
-    def fetchall(self, mode=5, after=0, parent='any', order_by='id',
+    def fetchall(self, mode=5, after=0, parent='any', order_by='created',
                  limit=100, page=0, asc=1):
         """
         Return comments for admin with :param:`mode`.
@@ -215,7 +215,7 @@ class Comments:
             yield dict(zip(fields_comments + fields_threads, item))
 
     def fetch(self, uri, mode=5, after=0, parent='any',
-              order_by='id', asc=1, limit=None):
+              order_by='created', asc=1, limit=None):
         """
         Return comments for :param:`uri` with :param:`mode`.
         """
