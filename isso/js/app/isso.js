@@ -149,12 +149,15 @@ var insert_loader = function(comment, lastcreated) {
                     return;
                 }
 
-                var lastcreated = 0;
+                // Note: lastcreated is originally set to 0
+                // This is part of a set of dirty hacks to have the comments appearing in reverse chronologic order
+                // Thing that ISSO doesn't support out of the box.
+                // Check entire commit to see all the hacks
+                var lastcreated = Number.MAX_SAFE_INTEGER;
                 rv.replies.forEach(function(commentObject) {
                     insert(commentObject, false);
-                    if(commentObject.created > lastcreated) {
-                        lastcreated = commentObject.created;
-                    }
+                    if(commentObject.created < lastcreated) {
+                        lastcreated = commentObject.created;                    }
                 });
 
                 if(rv.hidden_replies > 0) {
@@ -382,10 +385,15 @@ var insert = function(comment, scrollIntoView) {
     }
 
     if(comment.hasOwnProperty('replies')) {
-        var lastcreated = 0;
+
+        // Note: lastcreated is originally set to 0
+        // This is part of a set of dirty hacks to have the comments appearing in reverse chronologic order
+        // Thing that ISSO doesn't support out of the box.
+        // Check entire commit to see all the hacks
+        var lastcreated = Number.MAX_SAFE_INTEGER;
         comment.replies.forEach(function(replyObject) {
             insert(replyObject, false);
-            if(replyObject.created > lastcreated) {
+            if(replyObject.created < lastcreated) {
                 lastcreated = replyObject.created;
             }
 

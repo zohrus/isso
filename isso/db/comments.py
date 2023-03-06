@@ -219,9 +219,19 @@ class Comments:
         """
         Return comments for :param:`uri` with :param:`mode`.
         """
+
+        # Note: comparator was originally only >
+        # This is part of a set of dirty hacks to have the comments appearing in reverse chronologic order
+        # Thing that ISSO doesn't support out of the box.
+        # Check entire commit to see all the hacks
+        comparator = '>'
+        if(asc == 0 and str(after) > '0'):
+            comparator = '<'
+
+
         sql = ['SELECT comments.* FROM comments INNER JOIN threads ON',
                '    threads.uri=? AND comments.tid=threads.id AND (? | comments.mode) = ?',
-               '    AND comments.created>?']
+               '    AND comments.created ' + comparator + ' ?']
 
         sql_args = [uri, mode, mode, after]
 
@@ -332,11 +342,17 @@ class Comments:
         Return comment count for main thread and all reply threads for one url.
         """
 
+        # Note: comparator was originally only >
+        # This is part of a set of dirty hacks to have the comments appearing in reverse chronologic order
+        # Thing that ISSO doesn't support out of the box.
+        # Check entire commit to see all the hacks
+        comparator = '<' if(str(after) > '0') else '>'
+
         sql = ['SELECT comments.parent,count(*)',
                'FROM comments INNER JOIN threads ON',
                '   threads.uri=? AND comments.tid=threads.id AND',
                '   (? | comments.mode = ?) AND',
-               '   comments.created > ?',
+               '   comments.created ' + comparator + ' ?',
                'GROUP BY comments.parent']
 
         return dict(self.db.execute(sql, [url, mode, mode, after]).fetchall())

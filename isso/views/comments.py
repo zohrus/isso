@@ -848,7 +848,9 @@ class API(object):
 
         args = {
             'uri': uri,
-            'after': request.args.get('after', 0)
+            'after': request.args.get('after', 0),
+            'order_by': 'created',
+            'asc': 0
         }
 
         try:

@@ -132,11 +132,15 @@ function fetchComments() {
                 return;
             }
 
-            var lastcreated = 0;
+            // Note: lastcreated is originally set to 0
+            // This is part of a set of dirty hacks to have the comments appearing in reverse chronologic order
+            // Thing that ISSO doesn't support out of the box.
+            // Check entire commit to see all the hacks
+            var lastcreated = Number.MAX_SAFE_INTEGER;
             var count = rv.total_replies;
             rv.replies.forEach(function(comment) {
                 isso.insert(comment, false);
-                if (comment.created > lastcreated) {
+                if (comment.created < lastcreated) {
                     lastcreated = comment.created;
                 }
                 count = count + comment.total_replies;
