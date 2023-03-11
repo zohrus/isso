@@ -897,6 +897,7 @@ class API(object):
             'config': self.public_conf
         }
         # We are only checking for one level deep comments
+        args['asc'] = 1 # replies need to be in chronological order
         if root_id is None:
             for comment in rv['replies']:
                 if comment['id'] in reply_counts:
