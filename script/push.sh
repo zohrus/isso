@@ -15,4 +15,5 @@ aws --profile $PROFILE ecr get-login-password --region $REGION | docker login --
 docker tag $IMAGE:latest $REPOSITORY/$IMAGE:latest
 docker push $REPOSITORY/$IMAGE:latest
 
-cd ../
+task_arn=$(aws ecs list-tasks --cluster Meca1-Cluster --region $REGION | jq -r ".taskArns[]")
+aws ecs stop-task --cluster Meca1-Cluster --region $REGION --task "$task_arn"
