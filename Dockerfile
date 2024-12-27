@@ -81,12 +81,12 @@ RUN mkdir /db /config && chmod 1777 /db /config
 VOLUME /db /config
 EXPOSE 8080
 
-ADD config/isso.cfg /config/isso.cfg
-ENV ISSO_SETTINGS /config/isso.cfg
+ADD config/isso.meca1.fr.cfg /config/isso.meca1.fr.cfg
+ADD config/isso.meca1.co.uk.cfg /config/isso.meca1.co.uk.cfg
+ENV ISSO_SETTINGS "/config/isso.meca1.fr.cfg;/config/isso.meca1.co.uk.cfg"
 
 # Run Isso via gunicorn WSGI server
-ENTRYPOINT ["/isso/bin/gunicorn", "-b", "0.0.0.0:8080", "-w", "4", "--preload", "--worker-tmp-dir", "/dev/shm"]
-CMD ["isso.run"]
+ENTRYPOINT ["/isso/bin/gunicorn", "isso.dispatch", "-b", "0.0.0.0:8080", "-w", "4", "--preload", "--worker-tmp-dir", "/dev/shm"]
 
 # Example of use:
 #
